@@ -1,6 +1,7 @@
 import './css/styles.css';
-import { fetchCountries } from '/src/fetch-countries';
-import { makeCountryCard, makeCountriesList } from '/src/markup';
+import { fetchCountries } from './js/fetch-countries';
+import { createCardRef } from './js/markup-card';
+import { generateContentList } from './js/markup-list';
 import debounce from 'lodash.debounce';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
@@ -10,35 +11,31 @@ const inputRef = document.querySelector('#search-box');
 const listRef = document.querySelector('.country-list');
 const cardRef = document.querySelector('.country-info');
 
-inputRef.addEventListener('input', debounce(onHandleInput, DEBOUNCE_DELAY));
+inputRef.addEventListener('input', debounce(onEventInput, DEBOUNCE_DELAY));
 
-function onHandleInput(e) {
+function onEventInput(e) {
   e.preventDefault();
-  removeCountriesMarkup();
-  const countyName = e.target.value.trim();
-  fetchCountries(countyName)
-    .then(country => {
-      if (country.length > 10) {
+  removeInput();
+  const user = e.target.value.trim();
+  fetchCountries(user)
+    .then(data => {
+      if (data.length > 10) {
         Notify.info(
-          'Too many matches found. Please enter a more specific name.',
-          {
-            timeout: 500,
-          }
+          'Too many matches found. Please enter a more specific name.'
         );
       }
-      if (country.length < 10) {
-        listRef.innerHTML = makeCountriesList(country);
+      if (data.length < 10) {
+        listRef.innerHTML = generateContentList(data);
       }
-      if (country.length === 1) {
-        cardRef.innerHTML = makeCountryCard(country[0]);
+      if (data.length === 1) {
         listRef.innerHTML = '';
-        return;
+        cardRef.innerHTML = createCardRef(data[0]);
       }
     })
     .catch(error => Notify.failure('Oops, there is no country with that name'));
 }
 
-function removeCountriesMarkup() {
+function removeInput() {
   listRef.innerHTML = '';
   cardRef.innerHTML = '';
 }
