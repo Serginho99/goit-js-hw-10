@@ -32,10 +32,14 @@ function onEventInput(e) {
         cardRef.innerHTML = createCardRef(data[0]);
       }
     })
-    .catch(error => Notify.failure('Oops, there is no country with that name'));
+    .catch(onError);
 }
 
 function removeInput() {
   listRef.innerHTML = '';
   cardRef.innerHTML = '';
+}
+
+function onError(error) {
+  Notify.failure('Oops, there is no country with that name');
 }
