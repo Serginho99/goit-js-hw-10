@@ -11,20 +11,25 @@ const inputRef = document.querySelector('#search-box');
 const listRef = document.querySelector('.country-list');
 const cardRef = document.querySelector('.country-info');
 
-inputRef.addEventListener('input', debounce(onEventInput, DEBOUNCE_DELAY));
+inputRef.addEventListener(
+  'input',
+  debounce(handleSearchCountries, DEBOUNCE_DELAY)
+);
 
-function onEventInput(e) {
-  e.preventDefault();
+function handleSearchCountries(e) {
   removeInput();
-  const user = e.target.value.trim();
-  fetchCountries(user)
+  const value = e.target.value.trim();
+  if (!value) {
+    return;
+  }
+  fetchCountries(value)
     .then(data => {
       if (data.length > 10) {
         Notify.info(
-          'Too many matches found. Please enter a more specific name.'
+          `Too many matches found. Please enter a more specific name.`
         );
       }
-      if (data.length < 10) {
+      if (data.length <= 10) {
         listRef.innerHTML = generateContentList(data);
       }
       if (data.length === 1) {
@@ -40,6 +45,6 @@ function removeInput() {
   cardRef.innerHTML = '';
 }
 
-function onError(error) {
+function onError() {
   Notify.failure('Oops, there is no country with that name');
 }

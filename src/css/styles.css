@@ -33,5 +33,19 @@ h2 {
 }
 
 .list_item {
-  margin-bottom: 10px;
+  display: flex;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.img {
+  margin-right: 10px;
+}
+.box {
+  display: flex;
+  align-items: center;
+}
+
+.card__img {
+  margin-right: 10px;
 }
