@@ -1,5 +1,5 @@
 import './css/styles.css';
-import { fetchCountries } from './js/fetch-countries';
+import fetchCountries from './js/fetch-countries';
 import { createCardRef } from './js/markup-card';
 import { generateContentList } from './js/markup-list';
 import debounce from 'lodash.debounce';
@@ -22,22 +22,43 @@ function handleSearchCountries(e) {
   if (!value) {
     return;
   }
-  fetchCountries(value)
-    .then(data => {
-      if (data.length > 10) {
-        Notify.info(
-          `Too many matches found. Please enter a more specific name.`
-        );
-      }
-      if (data.length <= 10) {
-        listRef.innerHTML = generateContentList(data);
-      }
-      if (data.length === 1) {
-        listRef.innerHTML = '';
-        cardRef.innerHTML = createCardRef(data[0]);
-      }
-    })
-    .catch(onError);
+  renderedContainer(value);
+  // fetchCountries(value)
+  //   .then(data => {
+  //     if (data.length > 10) {
+  //       Notify.info(
+  //         `Too many matches found. Please enter a more specific name.`
+  //       );
+  //     }
+  //     if (data.length <= 10) {
+  //       listRef.innerHTML = generateContentList(data);
+  //     }
+  //     if (data.length === 1) {
+  //       listRef.innerHTML = '';
+  //       cardRef.innerHTML = createCardRef(data[0]);
+  //     }
+  //   })
+  //   .catch(onError);
+}
+
+async function renderedContainer(name) {
+  const result = await fetchCountries(name);
+  try {
+    if (result.length > 10) {
+      Notify.info(`Too many matches found. Please enter a more specific name.`);
+    }
+    if (result.length <= 10) {
+      listRef.innerHTML = generateContentList(result);
+    }
+    if (result.length === 1) {
+      listRef.innerHTML = '';
+      cardRef.innerHTML = createCardRef(result[0]);
+    }
+  } catch (error) {
+    if ((!result, ok)) {
+      throw new Error(onError);
+    }
+  }
 }
 
 function removeInput() {
