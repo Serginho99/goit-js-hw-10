@@ -16,7 +16,7 @@ export default async function fetchCountries(name) {
     `${BASE_URL}/name/${name}?field=${FILTER_RESPONSE}`
   );
   const data = await response.json();
-  if (!data.ok) {
+  if (data === 404) {
     throw new Error(data.status);
   }
   return data;

@@ -55,7 +55,7 @@ async function renderedContainer(name) {
       cardRef.innerHTML = createCardRef(result[0]);
     }
   } catch (error) {
-    console.log(error);
+    console.log('ошибка');
   }
 }
 
