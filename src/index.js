@@ -42,8 +42,8 @@ function handleSearchCountries(e) {
 }
 
 async function renderedContainer(name) {
-  const result = await fetchCountries(name);
   try {
+    const result = await fetchCountries(name);
     if (result.length > 10) {
       Notify.info(`Too many matches found. Please enter a more specific name.`);
     }
@@ -55,7 +55,7 @@ async function renderedContainer(name) {
       cardRef.innerHTML = createCardRef(result[0]);
     }
   } catch (error) {
-    console.log('ошибка');
+    onError();
   }
 }
 
